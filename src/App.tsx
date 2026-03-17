@@ -44,6 +44,7 @@ export default function App() {
   const [status, setStatus] = useState<string>('System Ready');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-close sidebar on mobile
@@ -79,8 +80,16 @@ export default function App() {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Check for duplicates
+    if (documents.some(doc => doc.metadata.source === file.name)) {
+      setStatus(`"${file.name}" is already indexed.`);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     setIsUploading(true);
-    setStatus(`Processing ${file.name}...`);
+    setUploadProgress(0);
+    setStatus(`Extracting text from ${file.name}...`);
     
     try {
       let text = "";
@@ -91,24 +100,35 @@ export default function App() {
       }
 
       // Simple chunking logic: split by double newlines or large blocks
-      const chunks = text.split(/\n\s*\n/).filter(c => c.trim().length > 20);
+      const chunks = text.split(/\n\s*\n/).filter(c => c.trim().length > 20).slice(0, 50);
       
       setStatus(`Indexing ${chunks.length} segments...`);
       
-      const processedChunks: DocumentChunk[] = await Promise.all(
-        chunks.slice(0, 50).map(async (text, i) => {
-          const embedding = await generateEmbedding(text);
-          return {
-            text,
-            embedding,
-            metadata: { 
-              source: file.name, 
-              index: i,
-              id: `${file.name}-${i}-${Date.now()}`
-            }
-          };
-        })
-      );
+      const processedChunks: DocumentChunk[] = [];
+      const batchSize = 5; // Process in small batches to avoid lag and rate limits
+      
+      for (let i = 0; i < chunks.length; i += batchSize) {
+        const batch = chunks.slice(i, i + batchSize);
+        const batchResults = await Promise.all(
+          batch.map(async (chunkText, indexWithinBatch) => {
+            const globalIndex = i + indexWithinBatch;
+            const embedding = await generateEmbedding(chunkText);
+            return {
+              text: chunkText,
+              embedding,
+              metadata: { 
+                source: file.name, 
+                index: globalIndex,
+                id: `${file.name}-${globalIndex}-${Date.now()}`
+              }
+            };
+          })
+        );
+        processedChunks.push(...batchResults);
+        const progress = Math.round(((i + batch.length) / chunks.length) * 100);
+        setUploadProgress(progress);
+        setStatus(`Indexing ${file.name}: ${progress}% complete`);
+      }
 
       setDocuments(prev => [...prev, ...processedChunks]);
       setStatus(`Indexed ${file.name} successfully.`);
@@ -117,6 +137,8 @@ export default function App() {
       setStatus('Error processing document.');
     } finally {
       setIsUploading(false);
+      setUploadProgress(0);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -210,14 +232,38 @@ export default function App() {
         </div>
 
         <div className="p-4 border-t border-white/5">
-          <button 
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 py-3 rounded-xl font-medium transition-all shadow-lg shadow-indigo-500/10"
-          >
-            {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
-            <span>{isUploading ? 'Processing...' : 'Upload Document'}</span>
-          </button>
+          <div className="space-y-3">
+            {isUploading && (
+              <div className="px-1">
+                <div className="flex justify-between text-[10px] font-mono text-indigo-400 mb-1">
+                  <span>INDEXING PROGRESS</span>
+                  <span>{uploadProgress}%</span>
+                </div>
+                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${uploadProgress}%` }}
+                    className="h-full bg-indigo-500"
+                  />
+                </div>
+              </div>
+            )}
+            <button 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="w-full flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 py-3 rounded-xl font-medium transition-all shadow-lg shadow-indigo-500/10 relative overflow-hidden"
+            >
+              {isUploading && (
+                <motion.div 
+                  initial={{ x: '-100%' }}
+                  animate={{ x: `${uploadProgress - 100}%` }}
+                  className="absolute inset-0 bg-indigo-400/20 pointer-events-none"
+                />
+              )}
+              {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+              <span className="relative z-10">{isUploading ? `Indexing... ${uploadProgress}%` : 'Upload Document'}</span>
+            </button>
+          </div>
           <input 
             type="file" 
             ref={fileInputRef} 
