@@ -77,7 +77,7 @@ export const generateAnswer = async (query: string, context: string) => {
     if (!ai) return "AI service is currently unavailable. Please check your API key.";
     
     const prompt = `
-      You are an AI assistant powered by the Endee Vector Database.
+      You are DocuQuery, a professional document analysis assistant.
       Use the following context to answer the user's question.
       If the answer is not in the context, say you don't know based on the provided documents.
       

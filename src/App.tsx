@@ -488,7 +488,7 @@ export default function App() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12">
                   {[
                     { icon: Shield, title: "Secure Indexing", desc: "Your documents are processed locally and never stored on external servers." },
-                    { icon: Zap, title: "Sub-second Search", desc: "High-performance vector retrieval powered by Endee Search kernels." },
+                    { icon: Zap, title: "Sub-second Search", desc: "High-performance vector retrieval powered by DocuQuery Search kernels." },
                     { icon: Brain, title: "Neural Synthesis", desc: "Advanced LLM integration for human-like reasoning over your data." }
                   ].map((feature, i) => (
                     <div key={i} className="glass rounded-2xl p-6 space-y-4">
@@ -514,7 +514,7 @@ export default function App() {
             </div>
             <div className="hidden sm:flex items-center gap-2">
               <Cpu className="w-3 h-3 text-indigo-500" />
-              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Engine: Endee v1.3</span>
+              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Engine: DocuQuery v1.3</span>
             </div>
           </div>
           <div className="text-[10px] font-mono text-slate-600 uppercase tracking-widest">
