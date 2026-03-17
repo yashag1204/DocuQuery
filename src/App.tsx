@@ -27,8 +27,8 @@ import { generateEmbedding, searchChunks, generateAnswer, type DocumentChunk } f
 
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Set up the worker for pdfjs-dist
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Set up the worker for pdfjs-dist using unpkg (more reliable for latest versions)
+pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
