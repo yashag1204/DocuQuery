@@ -1,11 +1,23 @@
-<div align="center">
+# DocuQuery 🧠📄
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+**DocuQuery** is an advanced, AI-powered document search and query system. It leverages Retrieval-Augmented Generation (RAG) and high-performance semantic vector search to provide precise, synthesized answers from your indexed documents.
 
-  <h1>Built with AI Studio</h2>
+## 🚀 Features
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+- **Advanced RAG Pipeline**: Combines vector retrieval with LLM synthesis for accurate answers.
+- **High-Performance Vector Store**: Powered by the Endee search engine for sub-millisecond similarity matching.
+- **Modern Responsive UI**: A sleek, glassmorphism-inspired interface that works perfectly on phones, tablets, and desktops.
+- **Secure Processing**: Documents are processed with privacy in mind, utilizing local indexing logic.
+- **Multi-Format Support**: Seamlessly index PDF and TXT files.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🛠️ Tech Stack
 
-</div>
+- **Frontend**: React 19, Tailwind CSS 4, Framer Motion, Lucide Icons.
+- **Backend**: Express.js, Multer for file handling.
+- **AI/ML**: Google Gemini for embeddings and text synthesis.
+- **Vector Engine**: Endee Vector Database integration.
+
+## 🔗 Links
+- **Endee Official**: [https://github.com/endee-io/endee](https://github.com/endee-io/endee)
+- **Project Repository**: [https://github.com/yashag1204/Endee-Project](https://github.com/yashag1204/Endee-Project)
+- **Company Website**: [https://www.startologic.com/](https://www.startologic.com/)

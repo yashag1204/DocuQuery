@@ -1,0 +1,5 @@
+{
+  "name": "DocuQuery",
+  "description": "An advanced, AI-powered document search and query system using RAG (Retrieval-Augmented Generation) and semantic vector search.",
+  "requestFramePermissions": []
+}
