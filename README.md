@@ -91,6 +91,30 @@ The app will be available at `http://localhost:3000`.
 
 ---
 
+## 🚀 Deployment to GitHub Pages
+
+If you are seeing a **blank white screen** after deploying to GitHub Pages, follow these steps:
+
+### **1. Fix the Base Path**
+In `vite.config.ts`, ensure the `base` property is set to `'./'`. This ensures that assets are loaded correctly regardless of the subpath.
+*(I have already updated this for you in the codebase)*.
+
+### **2. Handle the Backend Limitation**
+**Important**: GitHub Pages is a **static hosting service**. It does not support Node.js/Express backends. 
+- The current app uses an Express server to parse PDFs. 
+- On GitHub Pages, the "Upload" feature will fail because the `/api/process-document` endpoint won't exist.
+
+**Solutions**:
+1. **Use Vercel or Netlify**: These platforms support serverless functions and are better suited for full-stack apps.
+2. **Client-Side Parsing**: (Recommended for GitHub Pages) Move the PDF parsing logic to the browser using a library like `pdfjs-dist`.
+
+### **3. Deployment Steps**
+1. Run `npm run build`.
+2. Push the contents of the `dist` folder to your `gh-pages` branch.
+3. In your GitHub Repository settings, set the source to the `gh-pages` branch.
+
+---
+
 ## 🔗 Project Links
 
 - **🌐 Live Demo**: [DocuQuery App](https://ais-pre-s3wpduxrw4wlpndyycwuln-587604723575.asia-east1.run.app)
