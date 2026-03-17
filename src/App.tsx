@@ -25,6 +25,11 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { generateEmbedding, searchChunks, generateAnswer, type DocumentChunk } from './services/ai';
 
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Set up the worker for pdfjs-dist
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -55,6 +60,21 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const extractTextFromPDF = async (file: File): Promise<string> => {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = "";
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map((item: any) => item.str).join(' ');
+      fullText += pageText + "\n\n";
+    }
+    
+    return fullText;
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -63,23 +83,20 @@ export default function App() {
     setStatus(`Processing ${file.name}...`);
     
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      let text = "";
+      if (file.type === 'application/pdf') {
+        text = await extractTextFromPDF(file);
+      } else {
+        text = await file.text();
+      }
 
-      const response = await fetch('/api/process-document', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error('Failed to process document');
-
-      const data = await response.json();
-      const chunks: string[] = data.chunks;
+      // Simple chunking logic: split by double newlines or large blocks
+      const chunks = text.split(/\n\s*\n/).filter(c => c.trim().length > 20);
       
       setStatus(`Indexing ${chunks.length} segments...`);
       
       const processedChunks: DocumentChunk[] = await Promise.all(
-        chunks.map(async (text, i) => {
+        chunks.slice(0, 50).map(async (text, i) => {
           const embedding = await generateEmbedding(text);
           return {
             text,

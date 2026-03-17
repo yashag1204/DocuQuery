@@ -91,6 +91,28 @@ The app will be available at `http://localhost:3000`.
 
 ---
 
+## 🚀 Deployment to Netlify
+
+DocuQuery is optimized for Netlify deployment. Since all document processing (including PDF parsing) now happens on the **client side**, the app is a pure Single Page Application (SPA).
+
+### **1. Manual Deployment**
+1. Run `npm run build`.
+2. Drag and drop the `dist` folder into the Netlify dashboard.
+
+### **2. Automated Deployment (GitHub)**
+1. Push your code to GitHub.
+2. Connect your repository to Netlify.
+3. Use the following build settings:
+   - **Build Command**: `npm run build`
+   - **Publish Directory**: `dist`
+4. Add your **Environment Variables** in the Netlify UI:
+   - `GEMINI_API_KEY`: Your Google Gemini API Key.
+
+### **3. SPA Routing**
+I have included a `netlify.toml` file in the repository. This ensures that Netlify handles React Router paths correctly by redirecting all requests to `index.html`.
+
+---
+
 ## 🚀 Deployment to GitHub Pages
 
 If you are seeing a **blank white screen** after deploying to GitHub Pages, follow these steps:
