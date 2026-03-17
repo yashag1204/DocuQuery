@@ -12,6 +12,15 @@
 
 ---
 
+## 🖼️ Screenshots
+
+<div align="center">
+  <img src="https://picsum.photos/seed/docuquery-hero/800/450" alt="DocuQuery Dashboard" width="800" />
+  <p><i>DocuQuery's Modern Glassmorphism Dashboard</i></p>
+</div>
+
+---
+
 ## 🚀 Core Capabilities
 
 - **🧠 Neural Synthesis**: Advanced LLM integration that reasons over your data to provide human-like answers.
@@ -24,12 +33,20 @@
 
 ## 🛠️ The Intelligence Stack
 
-| Layer | Technology |
-| :--- | :--- |
-| **Frontend** | React 19, Tailwind CSS 4, Framer Motion |
-| **Backend** | Express.js, Multer |
-| **Vector Engine** | Endee Vector Database |
-| **AI Models** | Google Gemini (Embeddings & Synthesis) |
+### **Frontend**
+- ⚛️ **React 19** - UI Component Architecture
+- 🎨 **Tailwind CSS 4** - Utility-First Styling
+- ✨ **Framer Motion** - Fluid Animations
+- 🧩 **Lucide Icons** - Crisp SVG Iconography
+
+### **Backend**
+- 🟢 **Node.js / Express** - Server-Side Runtime
+- 📂 **Multer** - File Upload Handling
+- 📄 **PDF-Parse** - Document Extraction
+
+### **AI & Vector Engine**
+- 💎 **Google Gemini** - Embeddings & Synthesis
+- ⚡ **Endee Vector DB** - High-Performance Retrieval
 
 ---
 
@@ -48,10 +65,38 @@ graph LR
     I --> J[Precise Answer]
 ```
 
-1. **Ingestion**: Documents are parsed and split into semantic segments.
-2. **Embedding**: Each segment is converted into a 768-dimensional vector.
-3. **Retrieval**: When you ask a question, we find the most relevant segments in real-time.
-4. **Synthesis**: The AI uses the retrieved context to generate a factual, grounded response.
+---
+
+## 🏁 Getting Started
+
+### **1. Prerequisites**
+- Node.js (v18+)
+- A Google Gemini API Key
+
+### **2. Installation**
+```bash
+# Clone the repository
+git clone https://github.com/yashag1204/DocuQuery.git
+
+# Navigate to the project directory
+cd DocuQuery
+
+# Install dependencies
+npm install
+```
+
+### **3. Configuration**
+Create a `.env` file in the root directory and add your Gemini API key:
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+### **4. Run the Application**
+```bash
+# Start the development server
+npm run dev
+```
+The app will be available at `http://localhost:3000`.
 
 ---
 
@@ -61,6 +106,8 @@ graph LR
 - **💻 Repository**: [https://github.com/yashag1204/DocuQuery](https://github.com/yashag1204/DocuQuery)
 - **📦 Endee Official**: [https://github.com/endee-io/endee](https://github.com/endee-io/endee)
 - **🏢 Company**: [Startologic](https://www.startologic.com/)
+
+> **Note on Live Demo**: If the link doesn't show the app, ensure you have clicked the **"Share"** button in AI Studio to publish your build.
 
 ---
 
