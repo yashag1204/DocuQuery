@@ -12,15 +12,6 @@
 
 ---
 
-## 🖼️ Screenshots
-
-<div align="center">
-  <img src="https://picsum.photos/seed/docuquery-hero/800/450" alt="DocuQuery Dashboard" width="800" />
-  <p><i>DocuQuery's Modern Glassmorphism Dashboard</i></p>
-</div>
-
----
-
 ## 🚀 Core Capabilities
 
 - **🧠 Neural Synthesis**: Advanced LLM integration that reasons over your data to provide human-like answers.
