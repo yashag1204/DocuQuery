@@ -152,3 +152,4 @@ In `vite.config.ts`, ensure the `base` property is set to `'./'`. This ensures t
   <p>Built with ❤️ for high-performance semantic search.</p>
   <p>© 2026 DocuQuery Intelligence</p>
 </div>
+Author Yash Agrawal
